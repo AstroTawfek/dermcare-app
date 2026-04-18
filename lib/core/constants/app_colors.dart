@@ -29,4 +29,6 @@ class AppColors {
   static const Color femaleBg = Color(0xFFFCE4EC); // Light pink
 
   static const Color paleBlue = Color(0xFFE3F2FD);
+
+  static const Color skyBlue = Color(0xFF87CEEB); // Classic sky blue
 }
