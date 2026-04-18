@@ -27,4 +27,6 @@ class AppColors {
   // Gender card colours
   static const Color maleBg = Color(0xFFE3F2FD); // Light blue
   static const Color femaleBg = Color(0xFFFCE4EC); // Light pink
+
+  static const Color paleBlue = Color(0xFFE3F2FD);
 }
