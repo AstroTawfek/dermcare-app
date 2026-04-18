@@ -31,4 +31,6 @@ class AppColors {
   static const Color paleBlue = Color(0xFFE3F2FD);
 
   static const Color skyBlue = Color(0xFF87CEEB); // Classic sky blue
+
+  static const Color greyLight = Color(0xFFB0BEC5); // Light grey
 }
