@@ -87,7 +87,6 @@
   # see https://flutter.dev/to/font-from-package
 
 
-
 name: dermcare_app
 description: A Dermatology Doctor Appointment Mobile App
 publish_to: 'none'
