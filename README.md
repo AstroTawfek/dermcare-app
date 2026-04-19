@@ -5,17 +5,6 @@
  
 ---
  
-## 👥 Team
- 
-| Member | Role | Screens |
-|--------|------|---------|
-| KT | Authentication | Splash, Welcome, Login, Sign Up |
-| NE | Doctors Module | Home, Doctor List (M/F Filter), Doctor Detail |
-| ARP | Profile & Notifications | Profile, Notifications, Chat |
-| [Your Name] | Lead / Scheduling | Schedule, Appointments, Payment |
- 
----
- 
 ## 🛠️ Tech Stack
  
 - **Flutter (Dart)** — Cross-platform mobile (Android + iOS)
