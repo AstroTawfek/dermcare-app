@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ── Header ──────────────────────────────────────────────
+            // ── Blue Header ──────────────────────────────────────────
             Container(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
               decoration: const BoxDecoration(
@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Column(
                 children: [
+                  // Greeting row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -88,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // ── Search Bar ──────────────────────────────────
+                  // Search bar
                   TextField(
                     controller: _searchCtrl,
                     onChanged: (v) =>
@@ -105,8 +106,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       suffixIcon: _searchQuery.isNotEmpty
                           ? IconButton(
-                              icon: const Icon(Icons.clear,
-                                  color: AppColors.greyText),
+                              icon: const Icon(
+                                Icons.clear,
+                                color: AppColors.greyText,
+                              ),
                               onPressed: () {
                                 _searchCtrl.clear();
                                 setState(() => _searchQuery = '');
@@ -126,11 +129,130 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
+            // ── Gender Cards — ALWAYS VISIBLE ────────────────────────
+            Container(
+              color: AppColors.background,
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Browse by',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.darkText,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      // Male Doctors card
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => context.go('/doctors/male'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE3F2FD),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.male,
+                                  color: Colors.blue,
+                                  size: 36,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Male Doctors',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      // Female Doctors card
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => context.go('/doctors/female'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFCE4EC),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.female,
+                                  color: Colors.pink,
+                                  size: 36,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Female Doctors',
+                                  style: TextStyle(
+                                    color: Colors.pink,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // ── Available Doctors Header ─────────────────────────────
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Available Doctors',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.darkText,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => context.go('/doctors/all'),
+                    child: const Text(
+                      'See all',
+                      style: TextStyle(
+                        color: AppColors.primaryLight,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // ── Doctors List ─────────────────────────────────────────
             Expanded(
               child: StreamBuilder<List<DoctorModel>>(
                 stream: _getDoctors(),
                 builder: (context, snapshot) {
-                  // ── Loading ──────────────────────────────────────
+                  // Loading
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(
@@ -139,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  // ── Error ────────────────────────────────────────
+                  // Error
                   if (snapshot.hasError) {
                     return Center(
                       child: Padding(
@@ -147,8 +269,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.error_outline,
-                                size: 60, color: AppColors.error),
+                            const Icon(
+                              Icons.error_outline,
+                              size: 60,
+                              color: AppColors.error,
+                            ),
                             const SizedBox(height: 16),
                             const Text(
                               'Failed to load doctors',
@@ -172,17 +297,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  // ── No data ──────────────────────────────────────
+                  // No data
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.person_search,
-                              size: 64, color: AppColors.greyText),
+                          Icon(
+                            Icons.person_search,
+                            size: 64,
+                            color: AppColors.greyText,
+                          ),
                           SizedBox(height: 16),
                           Text(
-                            'No doctors found in database',
+                            'No doctors in database yet',
                             style: TextStyle(
                               fontSize: 16,
                               color: AppColors.greyText,
@@ -203,8 +331,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   final allDoctors = snapshot.data!;
 
-                  // ── Filter by search ─────────────────────────────
-                  final filteredDoctors = _searchQuery.isEmpty
+                  // Apply search filter
+                  final filtered = _searchQuery.isEmpty
                       ? allDoctors
                       : allDoctors.where((d) {
                           return d.name.toLowerCase().contains(_searchQuery) ||
@@ -214,122 +342,51 @@ class _HomeScreenState extends State<HomeScreen> {
                               d.gender.toLowerCase().contains(_searchQuery);
                         }).toList();
 
-                  return SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // ── Browse by Gender ─────────────────────
-                        if (_searchQuery.isEmpty) ...[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Browse by',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.darkText,
-                                  ),
-                                ),
-                              ],
+                  // No search results
+                  if (filtered.isEmpty && _searchQuery.isNotEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.search_off,
+                            size: 64,
+                            color: AppColors.greyText,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No results for "$_searchQuery"',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: AppColors.greyText,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: _genderCard(
-                                    context,
-                                    'Male Doctors',
-                                    Icons.male,
-                                    const Color(0xFFE3F2FD),
-                                    Colors.blue,
-                                    '/doctors/male',
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _genderCard(
-                                    context,
-                                    'Female Doctors',
-                                    Icons.female,
-                                    const Color(0xFFFCE4EC),
-                                    Colors.pink,
-                                    '/doctors/female',
-                                  ),
-                                ),
-                              ],
+                          const SizedBox(height: 8),
+                          GestureDetector(
+                            onTap: () {
+                              _searchCtrl.clear();
+                              setState(() => _searchQuery = '');
+                            },
+                            child: const Text(
+                              'Clear search',
+                              style: TextStyle(
+                                color: AppColors.primaryLight,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
+                      ),
+                    );
+                  }
 
-                        // ── Doctors List Header ──────────────────
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                _searchQuery.isEmpty
-                                    ? 'Available Doctors (${allDoctors.length})'
-                                    : 'Search Results (${filteredDoctors.length})',
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.darkText,
-                                ),
-                              ),
-                              if (_searchQuery.isEmpty)
-                                GestureDetector(
-                                  onTap: () => context.go('/doctors/all'),
-                                  child: const Text(
-                                    'See all',
-                                    style: TextStyle(
-                                      color: AppColors.primaryLight,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-
-                        // ── No search results ────────────────────
-                        if (filteredDoctors.isEmpty && _searchQuery.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.all(40),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  const Icon(Icons.search_off,
-                                      size: 60, color: AppColors.greyText),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    'No results for "$_searchQuery"',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: AppColors.greyText,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                        // ── Doctors List ─────────────────────────
-                        ...filteredDoctors.map(
-                          (doctor) => DoctorCard(
-                            doctor: doctor,
-                            onTap: () => context.go('/doctor/${doctor.id}'),
-                          ),
-                        ),
-
-                        const SizedBox(height: 20),
-                      ],
+                  // Show doctors list
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(top: 8, bottom: 20),
+                    itemCount: filtered.length,
+                    itemBuilder: (_, i) => DoctorCard(
+                      doctor: filtered[i],
+                      onTap: () => context.go('/doctor/${filtered[i].id}'),
                     ),
                   );
                 },
@@ -339,41 +396,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: const AppBottomNavBar(currentIndex: 0),
-    );
-  }
-
-  Widget _genderCard(
-    BuildContext context,
-    String label,
-    IconData icon,
-    Color bg,
-    Color iconColor,
-    String route,
-  ) {
-    return GestureDetector(
-      onTap: () => context.go(route),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: iconColor, size: 36),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: iconColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

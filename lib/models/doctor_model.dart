@@ -2,11 +2,11 @@ class DoctorModel {
   final String id;
   final String name;
   final String specialty;
-  final String gender; // 'male' or 'female'
+  final String gender;
   final String imageUrl;
   final String about;
   final double rating;
-  final int experience; // years
+  final int experience;
   final List<String> availableDays;
 
   const DoctorModel({
@@ -24,13 +24,15 @@ class DoctorModel {
   factory DoctorModel.fromMap(Map<String, dynamic> map, String id) {
     return DoctorModel(
       id: id,
-      name: map['name'] ?? '',
-      specialty: map['specialty'] ?? '',
-      gender: map['gender'] ?? 'male',
-      imageUrl: map['imageUrl'] ?? '',
-      about: map['about'] ?? '',
+      name: map['name']?.toString() ?? '',
+      specialty: map['specialty']?.toString() ?? '',
+      gender: map['gender']?.toString() ?? 'male',
+      imageUrl: map['imageUrl']?.toString() ?? '',
+      about: map['about']?.toString() ?? '',
+      // Fix: handles both int and double from Firestore
       rating: (map['rating'] ?? 0).toDouble(),
-      experience: map['experience'] ?? 0,
+      // Fix: handles both int and double from Firestore
+      experience: (map['experience'] ?? 0).toInt(),
       availableDays: List<String>.from(map['availableDays'] ?? []),
     );
   }
